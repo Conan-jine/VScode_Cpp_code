@@ -1,10 +1,10 @@
-#include <stdio.h>
 #include <iostream>
-#include <math.h>
+#include <cstdio>
 using namespace std;
 
 int main()
 {
-    cout<<1111<<endl;
-    return 0;
+	int i=3;
+	printf("%d   %d",(i++),(i++));
+	return 0;
 }
