@@ -1,10 +1,16 @@
 #include <iostream>
-#include <cstdio>
+#include <cmath>
 using namespace std;
 
 int main()
 {
-	int i=3;
-	printf("%d   %d",(i++),(i++));
-	return 0;
+	double arr[20],brr[20],num=136;
+	for(int i=0;i<15;i++)
+	{
+		cin>>arr[i];
+	}
+	for(int i=0;i<15;i++)
+	{
+		cout<<pow(arr[i]/num,2)<<endl;
+	}
 }
