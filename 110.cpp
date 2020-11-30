@@ -2,21 +2,67 @@
 #include <cmath>
 using namespace std;
 
+void print(double a,double b,double c);
+void count(double a,double b,double c);
+
 int main()
 {
-	printf("Hello World");
-	// 等价于
-	printf("%s","Hello World");
+    double a,b,c;
+    cout<<"Please input the a,b,c of the equation:"<<endl;
+    // cout<<"请输入方程的a，b，c："<<endl;
+    cout<<"\ta = ";
+    cin>>a;
+    cout<<"\tb = ";
+    cin>>b;
+    cout<<"\tc = ";
+    cin>>c;
+    cout<<"Yours input is:"<<endl;
+    // cout<<"你的输入是："<<endl;
+    print(a,b,c);
+    count(a,b,c);
+    return 0;
+}
 
-	int n=5;
-	printf("%d",n);
-	// %d 对应 整型n
-	// %s 对应 字符串 Hello World
+void print(double a,double b,double c)
+{
+    cout<<'\t';
+    if(a!=0)
+    {
+        if(a==1)    cout<<"x^2";
+        else    cout<<a<<"x^2";
+    }
+    if(b!=0)
+    {
+        if(b==1)    cout<<"+x";
+        else if(b==-1)  cout<<"-x";
+        else if(b>0)    cout<<"+"<<b<<"x";
+        else if(b<0)    cout<<b<<"x";
+    }
+    if(c!=0)
+    {
+        if(c>0) cout<<"+";
+        cout<<c;
+    }
+    cout<<"=0"<<endl;
+}
 
-	int a=3,b=4;
-	printf("%d %d",a,b);
-	printf("***%d***%d***",a,b);
-	// %d 会分别对应 右边的 a 和 b
-	// 相当于你使用 %s 对应 I ate apple.
-	// 你可以使用 %d 对应 苹果的数量，而 I ate apple 不用%s ，而是想 第18行那样，在*********里面加入%d
+void count(double a,double b,double c)
+{
+    double dierta,r,r1,r2;
+    dierta=b*b-4*a*c;
+    if(dierta<0)    cout<<"Equation has no root."<<endl;    // cout<<"等式没有根"<<endl;
+    else if(dierta==0)
+    {
+        r=-b/(2.0*a);
+        cout<<"Equation has one root:"<<endl;   // cout<<"等式具有1个根"<<endl;
+        cout<<"\tr = "<<r<<endl;
+    }
+    else if(dierta>0)
+    {
+        r1=(-b+sqrt(dierta))/(2.0*a);
+        r2=(-b-sqrt(dierta))/(2.0*a);
+        cout<<"Equation has two roots:"<<endl;  // cout<<"等式具有2个根"<<endl;
+        cout<<"\tr1 = "<<r1<<endl;
+        cout<<"\tr2 = "<<r2<<endl;
+    }
 }

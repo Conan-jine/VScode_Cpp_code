@@ -10,7 +10,7 @@ int main()
 {
     int n;
     scanf("%d",&n);
-    printf("printf(\"%%x\",16);\n");
+    printf("%s","I am ior\n");
     printf("%x\n",n);
     printf("%X\n",n);
     printf("%-8d\n",n);
