@@ -3,6 +3,19 @@
         "iostream": "cpp",
         "ostream": "cpp",
         "cmath": "cpp",
-        "random": "cpp"
-    }
+        "random": "cpp",
+        "iosfwd": "cpp"
+    },
+    "C_Cpp.vcFormat.newLine.beforeOpenBrace.block": "newLine",
+    "C_Cpp.vcFormat.newLine.beforeOpenBrace.function": "newLine",
+    "C_Cpp.vcFormat.newLine.beforeOpenBrace.type": "newLine",
+    "C_Cpp.vcFormat.space.afterComma": false,
+    "C_Cpp.vcFormat.space.afterKeywordsInControlFlowStatements": false,
+    "C_Cpp.vcFormat.space.aroundAssignmentOperator": "remove",
+    "C_Cpp.vcFormat.space.aroundBinaryOperator": "remove",
+    "C_Cpp.vcFormat.space.beforeBlockOpenBrace": false,
+    "C_Cpp.vcFormat.space.beforeConstructorColon": false,
+    "C_Cpp.vcFormat.space.beforeInheritanceColon": false,
+    "C_Cpp.vcFormat.space.pointerReferenceAlignment": "ignore",
+    "C_Cpp.vcFormat.space.withinInitializerListBraces": false
 }
