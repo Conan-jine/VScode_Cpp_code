@@ -1,12 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <malloc.h>
-#include <string.h>
-#include <ctype.h>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <algorithm>
 #define MAX 9999
 #define NUM 50
 using namespace std;
@@ -22,7 +18,7 @@ struct HuffmanNode
 struct HuffmancharCode
 {
 	string ch;
-	char Code[NUM];
+	string Code;
 };
 
 HuffmanNode HT[50*2-1];
@@ -30,10 +26,12 @@ HuffmancharCode HCD[50];
 int LeafNum;
 int NodeNum;
 string AllenCodestr;
-string AlldeCodestr;
+string AlldeCodestr="";
 string realStr;
 int AllWeight[50]={0};
 
+void Readfile(string name, string &str);
+void Writefile(string name, string &str);
 void Statistics();
 void CreateHuffmanTree();
 void SelectMin(int &min1, int &min2);
@@ -41,32 +39,84 @@ void CreateHuffmanCode();
 void ReverseStr(char *str);
 void EnCodeStr();
 void DeCodeHuffmanCode();
+void EnCode01Str(string name);
+void DeCode01Str(string name);
 
 int main()
 {
+	
+	// cout<<AllenCodestr<<endl;
+	// cout<<"Results of statistics:"<<endl;
+	// Statistics();
+	// cout<<"Results of each character:"<<endl;
+	// CreateHuffmanTree();
+	// CreateHuffmanCode();
+	// cout<<"Results of encode:"<<endl;
+	// EnCodeStr();
+	// DeCodeHuffmanCode();
+	int num;
+	while(1)
+	{
+		// cout<<"1. 打开 data.txt	将内容转化为	01字符串	存储于 01.txt "<<endl;
+		// cout<<"2. 打开 01.txt	将内容转化为	原文		存储于 da.txt"<<endl;
+		// cout<<"3. 打开 01.txt	将01八位压缩				存储于	zip.txt"<<endl;
+		// cout<<"4. 打开 zip.txt	将内容解压为	01字符串	存储于	01.txt"<<endl;
+		cin>>num;
+		if(num==1)
+		{
+			Readfile("data.txt",AllenCodestr);
+			Statistics();
+			CreateHuffmanTree();
+			CreateHuffmanCode();
+			EnCodeStr();
+			Writefile("01.txt",AlldeCodestr);
+		}
+		else if(num==2)
+		{
+			DeCodeHuffmanCode();
+		}
+		else if(num==3)
+		{
+			EnCode01Str("da.txt");
+		}
+		else if(num==4)
+		{
+			DeCode01Str("zip.txt");
+		}
+	}
+	return 0;
+}
+
+void Readfile(string name, string &str)
+{
+	str.clear();
 	string linestr;
 	fstream essay;
-	essay.open("data1.txt", ios::in);
+	essay.open(name,ios::in);
 	if(essay.is_open())
-		cout<<"Openfilesuccessful."<<endl;
+		cout<<"Openfile successful."<<endl;
+	else
+		cout<<"Openfile failed."<<endl;
+	
 	while(getline(essay,linestr))
 	{
 		linestr+='\n';
 		// cout<<linestr<<endl;
-		AllenCodestr+=linestr;
+		str+=linestr;
 	}
-	cout<<AllenCodestr<<endl;
-	cout<<"Results of statistics:"<<endl;
-	Statistics();
-	cout<<"Results of each character:"<<endl;
-	CreateHuffmanTree();
-	CreateHuffmanCode();
-	cout<<"Results of encode:"<<endl;
-	EnCodeStr();
-	// scanf("%s", EnterCode);
-	// getchar();
-	// DeCodeHuffmanCode();
-	return 0;
+}
+
+void Writefile(string name, string &str)
+{
+	fstream essay;
+	essay.open(name,ios::out|ios::binary);
+	if(essay.is_open())
+		cout<<"Openfile successful."<<endl;
+	else
+		cout<<"Openfile failed."<<endl;
+	
+	essay.write(str.c_str(),str.size());
+	essay.close();
 }
 
 void Statistics()
@@ -93,7 +143,6 @@ void Statistics()
 		else if(int(AllenCodestr[j])==32)	AllWeight[36]++;	// ' '
 		else if(int(AllenCodestr[j])==10)	AllWeight[37]++;	// '\n'
 		else if(isdigit(AllenCodestr[j]))	AllWeight[38+int(AllenCodestr[j])-48]++;
-		else	exit(-1);
 	}
 	int i=0,j=0;
 	for(;i<=50;i++)
@@ -101,25 +150,20 @@ void Statistics()
 		if(AllWeight[i]!=0)
 		{
 			HT[j].weight = AllWeight[i];
-			if(isalpha(AllenCodestr[i]))	HT[j].ch[0]='a'+i;
-			else if(isdigit(AllenCodestr[i]))	HT[j].ch[0]='0'+i-38;
-			else if(i==26)	HT[j].ch=',';
-			else if(i==27)	HT[j].ch='.';
-			else if(i==28)	HT[j].ch='-';
-			else if(i==29)	HT[j].ch='?';
-			else if(i==30)	HT[j].ch='!';
-			else if(i==31)	HT[j].ch='\'';
-			else if(i==32)	HT[j].ch='\"';
-			else if(i==33)	HT[j].ch='%';
-			else if(i==34)	HT[j].ch=':';
-			else if(i==35)	HT[j].ch=';';
-			else if(i==36)	HT[j].ch=' ';
-			else if(i==37)	HT[j].ch='\\';
-			else
-			{
-				j++;
-				continue;
-			}
+			if(i<26)	HT[j].ch='a'+i;
+			else if(i>37)	HT[j].ch='0'+i-38;
+			else if(i==26)	HT[j].ch=",";
+			else if(i==27)	HT[j].ch=".";
+			else if(i==28)	HT[j].ch="-";
+			else if(i==29)	HT[j].ch="?";
+			else if(i==30)	HT[j].ch="!";
+			else if(i==31)	HT[j].ch="'";
+			else if(i==32)	HT[j].ch="\"";
+			else if(i==33)	HT[j].ch="%";
+			else if(i==34)	HT[j].ch=":";
+			else if(i==35)	HT[j].ch=";";
+			else if(i==36)	HT[j].ch=" ";
+			else if(i==37)	HT[j].ch="\n";
 			j++;
 		}
 	}
@@ -230,14 +274,14 @@ void CreateHuffmanCode()
 		HCD[i].ch=HT[j].ch;
 		while(HT[j].parent!=-1)
 		{
-			if(HT[HT[j].parent].lchild==j)	HCD[i].Code[len++] = '0' + 0;
-			else	HCD[i].Code[len++] = '0' + 1;
+			if(HT[HT[j].parent].lchild==j)	HCD[i].Code+='0'+0;
+			else	HCD[i].Code+='0'+1;
 			j=HT[j].parent;
 		}
-		HCD[i].Code[len] ='\0';
-		ReverseStr(HCD[i].Code);
+		reverse(HCD[i].Code.begin(),HCD[i].Code.end());
 	}
-	for(int i=0;i<LeafNum;i++)	cout<<HT[i].ch[0]<<':'<<HCD[i].Code<<endl;	// printf("%c:%s\n",HT[i].ch,HCD[i].Code);
+	for(int i=0;i<LeafNum;i++)	cout<<HT[i].ch[0]<<':'<<HCD[i].Code<<endl;
+	// printf("%c:%s\n",HT[i].ch,HCD[i].Code);
 		
 }
 
@@ -255,13 +299,17 @@ void ReverseStr(char *str)
 
 void EnCodeStr()
 {
-	cout<<"Yes"<<endl;
 	int len=AllenCodestr.size();
 	for(int i=0;i<len;i++)
 	{
 		for(int j=0;j<LeafNum;j++)
 		{
-			if(AllenCodestr[i]==HCD[j].ch[0])	printf("%s",HCD[j].Code);
+			if(AllenCodestr[i]==HCD[j].ch[0])
+			{
+				// printf("%s",HCD[j].Code);
+				cout<<HCD[j].Code;
+				AlldeCodestr+=HCD[j].Code;
+			}
 		}
 	}
 	printf("\n");
@@ -269,26 +317,116 @@ void EnCodeStr()
 
 void DeCodeHuffmanCode()
 {
+	// cout<<"AlldeCode"<<endl<<AlldeCodestr<<endl;
 	int k=NodeNum-1;
 	int len=0,i=0;
 	while(AlldeCodestr[i])
 	{
-		if(AlldeCodestr[i]=='0'+0)	k=HT[k].lchild;
-		else if(AlldeCodestr[i]=='0'+1)	k=HT[k].rchild;			
-		else	exit(-1);
+		if(AlldeCodestr[i]=='0')	k=HT[k].lchild;
+		else if(AlldeCodestr[i]=='1')	k=HT[k].rchild;
 
 		if(HT[k].lchild==-1 && HT[k].rchild==-1)
 		{
-			realStr[len++]=HT[k].ch[0];
+			realStr+=HT[k].ch;
 			k=NodeNum-1;
 		}
 		i++;
 	}
-	realStr[len]='\0';
-	if(k==NodeNum-1)
-	{
-		printf("\n***������***\n%s\n\n", realStr);
-		exit(0);
-	}
-	exit(-1);
+	if(k==NodeNum-1)	cout<<realStr<<endl;
+	Writefile("da.txt",realStr);
+}
+
+
+void EnCode01Str(string name)
+{
+    char *fileName = (char *)name.data();
+    FILE *fileIn = fopen(fileName,"r");
+    FILE *fileOut = fopen("zip.txt","wb");
+    unsigned char c;
+    unsigned char value = 0;
+    int index = 0;
+    fseek(fileIn,0L,SEEK_SET);
+    c = fgetc(fileIn);
+    while(!feof(fileIn))
+    {
+        string str;
+		if(isalpha(c))
+		{
+			c=tolower(c);
+			str=HCD[int(c-'a')].Code;
+		}
+		else if(isdigit(c))	str=HCD[38+int(c)-48].Code;
+		else if(int(c)==44)	str=HCD[26].Code;
+		else if(int(c)==46)	str=HCD[27].Code;
+		else if(int(c)==45)	str=HCD[28].Code;
+		else if(int(c)==63)	str=HCD[29].Code;
+		else if(int(c)==33)	str=HCD[30].Code;
+		else if(int(c)==39)	str=HCD[31].Code;
+		else if(int(c)==34)	str=HCD[32].Code;
+		else if(int(c)==37)	str=HCD[33].Code;
+		else if(int(c)==58)	str=HCD[34].Code;
+		else if(int(c)==59)	str=HCD[35].Code;
+		else if(int(c)==32)	str=HCD[36].Code;
+		else if(int(c)==10)	str=HCD[37].Code;
+		cout<<c<<' '<<str<<endl;
+        for(int i=0;i<str.length();i++)
+        {
+            if(str[i] == '0')
+            {
+                ((value)&=(~(1<<((index)^7))));
+            }
+            else if(str[i] == '1')
+            {
+                ((value)|=(1<<((index)^7)));
+            }
+            index++;
+            if(index >= 8)
+            {
+                index = 0;
+                fwrite(&value,sizeof(unsigned char),1,fileOut);
+            }
+        }
+        c = fgetc(fileIn);
+    }
+    fclose(fileIn);
+    fclose(fileOut);
+}
+
+void DeCode01Str(string name)
+{
+	AlldeCodestr.clear();
+	realStr.clear();
+    char *fileName = (char *)name.data();
+    FILE *fileIn = fopen(fileName,"rb");
+    unsigned char value = 0;
+    int index = 0;
+    fseek(fileIn,0L,SEEK_SET);
+    int k = NodeNum-1;
+    fread(&value,sizeof(unsigned char),1,fileIn);
+    while(!feof(fileIn))
+    {
+        if(HT[k].lchild==-1 && HT[k].rchild==-1)
+        {
+            realStr+=HT[k].ch;
+            k=NodeNum-1;
+        }
+        if(((value)&(1<<((index)^7))) == 0)
+        {
+            k=HT[k].lchild;
+			AlldeCodestr+='0';
+        }
+        else if(((value)&(1<<((index)^7))) != 0)
+        {
+            k=HT[k].rchild;
+			AlldeCodestr+='1';
+        }
+        index++;
+        if(index >= 8)
+        {
+            index = 0;
+            fread(&value,sizeof(unsigned char),1,fileIn);
+        }
+    }
+    fclose(fileIn);
+	Writefile("ad.txt",realStr);
 }
