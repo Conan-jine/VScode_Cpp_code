@@ -1,19 +1,14 @@
-#include<stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+
 int main()
 {
-	int n,x,s=0;
-	scanf("%d%d",&x,&n);
-	for(x=0;x<=n;x++)
-	{
-		if((x%7>=1)&&(x%7<=5))
-		{
-			s+=250;
-		}
-		else
-		{
-			s=s;
-		}
-	 } 
-	printf("%d",s);
+	string str="abc-de";
+	string addstr="abd";
+	str.erase(str.begin()+3);
+	str.insert(str.begin()+3,addstr.begin(),addstr.end());
+	cout<<str<<endl;
 	return 0;
 }
