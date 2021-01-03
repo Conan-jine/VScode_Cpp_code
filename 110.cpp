@@ -5,10 +5,11 @@ using namespace std;
 
 int main()
 {
-	string str="abc-de";
-	string addstr="abd";
-	str.erase(str.begin()+3);
-	str.insert(str.begin()+3,addstr.begin(),addstr.end());
-	cout<<str<<endl;
+	char a;
+	while(1)
+	{
+		a=getchar();
+		cout<<a;
+	}
 	return 0;
 }
