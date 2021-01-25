@@ -7,26 +7,43 @@ using std::string;
 
 int main()
 {
+    int elen=0;
     char c,e;
     string str;
-    while(cin>>str)
+    string::iterator it,nit;
+    while(getline(cin,str))
     {
-        c=str[0];
-        e=str[str.size()-1];
-        if(e=='.')  str.erase(str.end()-1);
-        if(c=='a' || c=='e' || c=='i' || c=='o' || c=='u'||
-        c=='A' || c=='E' || c=='I' || c=='O' || c=='U')
+        str+='*';
+        for(it=str.begin();it!=str.end();it++)
         {
-            str.append("ay");
+            elen=0;
+            if(*it>='a' && *it<='z' || *it>='A' && *it<='Z')
+            {
+                nit=it;
+                while(*nit>='a' && *nit<='z' || *nit>='A' && *nit<='Z')
+                {
+                    nit++;
+                    elen++;
+                }
+                if(*it=='a' || *it=='e' || *it=='i' || *it=='o' || *it=='u' ||
+                *it=='A' || *it=='E' || *it=='I' || *it=='O' || *it=='U')
+                {
+                    str.insert(nit,'a');
+                    str.insert(nit+1,'y');
+                    elen+=2;
+                }
+                else
+                {
+                    str.insert(nit,*it);
+                    str.erase(it);
+                    str.insert(nit,'a');
+                    str.insert(nit+1,'y');
+                    elen+=2;
+                }
+            }
+            it+=elen;
         }
-        else
-        {
-            str+=c;
-            str.erase(str.begin());
-            str.append("ay");
-        }
-        cout<<str;
-        if(e=='.')  cout<<'.';
-        else    cout<<' ';
+        str.erase(str.end()-1);
+        cout<<str<<endl;
     }
 }
