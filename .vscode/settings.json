@@ -90,5 +90,5 @@
     "C_Cpp.vcFormat.space.beforeInheritanceColon": false,
     "C_Cpp.vcFormat.space.withinInitializerListBraces": false,
     "editor.acceptSuggestionOnEnter": "off",
-    "editor.quickSuggestionsDelay": 2000
+    "editor.quickSuggestionsDelay": 500
 }
