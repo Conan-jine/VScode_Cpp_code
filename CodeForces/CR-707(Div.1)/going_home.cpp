@@ -53,19 +53,17 @@ int main()
     }
     for(int i=0;i<n;i++)
     {
-        for(int j=i;j<n;j++)
+        for(int j=i+1;j<n;j++)
         {
-            sumArr[arr[i].num+arr[j].num].exist=true;
-            sumArr[arr[i].num+arr[j].num].loc1=arr[i].loc;
-            sumArr[arr[i].num+arr[j].num].loc2=arr[j].loc;
-        }
-    }
-    for(int i=0;i<n;i++)
-    {
-        for(int j=n-1;j>=0;j--)
-        {
+            if(i==j)    continue;
             inx=arr[i].num+arr[j].num;
-            if(sumArr[inx].exist)
+            if(!sumArr[inx].exist)
+            {
+                sumArr[arr[i].num+arr[j].num].exist=true;
+                sumArr[arr[i].num+arr[j].num].loc1=arr[i].loc;
+                sumArr[arr[i].num+arr[j].num].loc2=arr[j].loc;
+            }
+            else if(sumArr[inx].exist)
             {
                 if(arr[i].loc!=sumArr[inx].loc1 && arr[j].loc!=sumArr[inx].loc2 && arr[i].loc!=sumArr[inx].loc2 && arr[j].loc!=sumArr[inx].loc1)
                 {
