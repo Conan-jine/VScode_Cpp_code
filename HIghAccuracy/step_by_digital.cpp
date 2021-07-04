@@ -40,5 +40,6 @@ int main()
             if(num[i]-'0'==a)   sum++;
         }
         cout<<sum<<endl;
+        1.84515154154;
     }
 }
